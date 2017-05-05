@@ -1,0 +1,58 @@
+#include <stdio.h>
+#include <time.h>
+#include "E101.h"
+
+int main() {
+	
+	init();
+	
+	//To let us swap to different logic easily.
+	int quadrant = 1;
+	
+	int leftSpeed = 50;
+	int rightSpeed = 50;
+	
+	bool skewLeft = false;
+	bool skewRight = false;
+	
+	//motor 1 is on the left, 2 is on the right.
+	set_motor(1,leftSpeed);
+	set_motor(2,rightSpeed);
+	
+	while (quadrant == 1) {
+		
+		take_picture();
+		int pictureSum = 0;
+		
+		//Creates an array of 320 pixel values, horizontal line halfway up the picture. Pushes each pixel to either entirely black or entirely white.
+		int i;
+		int[320] horizontal;
+		for (i=0; i<320; i++) {
+			horizontal[i] = get_pixel(i,120,3);
+			if (horizontal[i] < 128) {
+				horizontal[i] = 0;
+			} else {
+				horizontal[i] = 255;
+			}
+		}
+		
+		//Still need to add in the determination of skewleft/skewright here
+		
+		
+		//If we're skewing either direction, increase speed in one motor. Otherwise, reset to standard speed.
+		if (skewLeft) {
+			rightSpeed += 5;
+		} else if (skewRight) {
+			leftSpeed += 5;
+		} else {
+			leftSpeed = 50;
+			rightSpeed = 50;
+		}
+		
+		set_motor(1,leftSpeed);
+		set_motor(2,rightSpeed);
+		
+	}
+		
+	
+return 0;}

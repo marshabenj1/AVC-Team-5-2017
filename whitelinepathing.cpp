@@ -23,36 +23,39 @@ int main() {
 		
 		take_picture();
 		int pictureSum = 0;
-		
-		
+		int kp = 0.1;// proportional constant. Value is placeholder.
+		int threshold = 128;// this is the number used to determine if a pixel is black or white.
+		int sum = 0;
 		
 		//Creates an array of 320 pixel values, horizontal line halfway up the picture. Pushes each pixel to either entirely black or entirely white.
 		int i;
-		int[320] horizontal;
+		int[320] horizontal;// examples had this as char PIX[320] im unsure if this is correct.
 		for (i=0; i<320; i++) {
 			horizontal[i] = get_pixel(i,120,3);
-			if (horizontal[i] < 128) {
+			
+			if (horizontal[i] < threshold) {
 				horizontal[i] = 0;
 			} else {
 				horizontal[i] = 255;
 			}
+			sum += (horizontal[i]*(i-160);// this is the sum error
 		}
-		
+		int proportional_signal_error = sum * kp;
 		//Still need to add in the determination of skewleft/skewright here
 		
 		
 		//If we're skewing either direction, increase speed in one motor. Otherwise, reset to standard speed.
-		if (skewLeft) {
-			rightSpeed += 5;
-		} else if (skewRight) {
-			leftSpeed += 5;
-		} else {
-			leftSpeed = 50;
-			rightSpeed = 50;
-		}
+		//if (skewLeft) {
+			//rightSpeed += 5;
+		//} else if (skewRight) {
+			//leftSpeed += 5;
+		//} else {
+			//leftSpeed = 50;
+			//rightSpeed = 50;
+		//}
 		
-		set_motor(1,leftSpeed);
-		set_motor(2,rightSpeed);
+		set_motor(1,leftSpeed * proportional_signal_error);
+		set_motor(2,rightSpeed * proportional_signal_error);
 		
 	}
 		

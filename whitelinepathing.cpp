@@ -24,6 +24,8 @@ int main() {
 		take_picture();
 		int pictureSum = 0;
 		
+		
+		
 		//Creates an array of 320 pixel values, horizontal line halfway up the picture. Pushes each pixel to either entirely black or entirely white.
 		int i;
 		int[320] horizontal;

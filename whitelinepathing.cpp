@@ -20,12 +20,14 @@ int main() {
 	set_motor(2,rightSpeed);
 	
 	while (quadrant == 1) {
-		
+		// we need a method for like a while loop that takes a picture every x milliseconds as the code runs.
 		take_picture();
 		int pictureSum = 0;
 		int kp = 0.1;// proportional constant. Value is placeholder.
+		int kd = 0.2;// derivative constant. Value is placeholder.
 		int threshold = 128;// this is the number used to determine if a pixel is black or white.
 		int sum = 0;
+		int previousSum = 0;
 		
 		//Creates an array of 320 pixel values, horizontal line halfway up the picture. Pushes each pixel to either entirely black or entirely white.
 		int i;
@@ -41,6 +43,8 @@ int main() {
 			sum += (horizontal[i]*(i-160);// this is the sum error
 		}
 		int proportional_signal_error = sum * kp;
+		int proportional_signal_error = (sum - previousSum)*kd;
+		previousSum = sum;
 		//Still need to add in the determination of skewleft/skewright here
 		
 		
@@ -53,9 +57,9 @@ int main() {
 			//leftSpeed = 50;
 			//rightSpeed = 50;
 		//}
-		
-		set_motor(1,leftSpeed * proportional_signal_error);
-		set_motor(2,rightSpeed * proportional_signal_error);
+		final_signal = proportional_signal_error + proportional_signal_error;
+		set_motor(1,leftSpeed * final_signal);
+		set_motor(2,rightSpeed * final_signal);
 		
 	}
 		

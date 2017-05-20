@@ -1,0 +1,67 @@
+#include <stdio.h>
+#include <time.h>
+#include "E101.h"
+
+int main() {
+	
+	init();
+
+	int quadrant = 1;
+	
+	int leftSpeed = 70;
+	int rightSpeed = 70;
+	
+	
+	while (quadrant == 1) {
+
+		take_picture();
+
+		float kp = 0.1;// proportional constant. Value is placeholder.
+		float kd = 0.2;// derivative constant. Value is placeholder.
+		int threshold = 100;// this is the number used to determine if a pixel is black or white.
+		int sum = 0;
+		int previousSum = 0;
+		char wh[320];
+		int whitepixels = 0;
+		
+		//Creates an array of 320 pixel values, horizontal line halfway up the picture. Pushes each pixel to either entirely black or entirely white.
+		int i;
+		char PIX[320];
+		
+		for (i=0; i<320; i++) {
+			 PIX[i] = get_pixel(120,i,3);
+			
+			if (PIX[i] < threshold) {
+				wh[i] = 0;
+			} else {
+				wh[i] = 1;
+				whitepixels++;
+			}
+			sum += (wh[i]*(i-160));// this is the sum error
+		}
+		int proportional_signal_error = sum * kp;
+		int derivative_signal_error = (sum - previousSum)*kd;
+		previousSum = sum;
+		
+		
+		int final_signal = proportional_signal_error + derivative_signal_error;
+		
+		int scalefactor = 40;
+		
+		final_signal /= scalefactor;
+		
+		
+		if (whitepixels > 5) {
+			set_motor(1, (leftSpeed - final_signal));
+			set_motor(2, (rightSpeed + final_signal));
+		}
+		else {
+			set_motor(1, -60);
+			set_motor(2, -60);
+		}
+		
+		
+	}
+		
+	
+return 0;}
